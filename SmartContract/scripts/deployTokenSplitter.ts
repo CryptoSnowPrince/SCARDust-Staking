@@ -14,28 +14,20 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
+  const team = "0x256C9FbE9093E7b9E3C4584aDBC3066D8c6216da";
+  const treasury = "0x7F77451e9c89058556674C5b82Bd5A4fab601AFC";
+  const trading = "0x821965C1fD8B60D4B33E23C5832E2A7662faAADC";
+  const _accounts = [team, treasury, trading]
+  const _shares = [4410, 800, 900];
   const _looksRareToken = "0xaB047Bbc2Ae6D98A89179188C7B3eD0585Bf7D0F";
-  const _tokenSplitter = "0x1dCD94a18376E34455274ed7069A6E3870fFd8E2";
-  const _startBlock = "10429000"; // Testnet BlockNumer
-  const _rewardsPerBlockForStaking = ["189000000000000000000","89775000000000000000","35437500000000000000","18900000000000000000"]
-  const _rewardsPerBlockForOthers = ["611000000000000000000", "290225000000000000000", "114562500000000000000", "61100000000000000000"];
-  const _periodLengthesInBlocks = ["195000", "585000", "1560000", "2346250"];
-  const _numberPeriods = "4";
 
-  const TokenDistributor = await ethers.getContractFactory("TokenDistributor");
-  const tokenDistributor = await TokenDistributor.deploy(
-    _looksRareToken,
-    _tokenSplitter,
-    _startBlock,
-    _rewardsPerBlockForStaking,
-    _rewardsPerBlockForOthers,
-    _periodLengthesInBlocks,
-    _numberPeriods
-  );
 
-  await tokenDistributor.deployed();
+  const TokenSplitter = await ethers.getContractFactory("TokenSplitter");
+  const tokenSplitter = await TokenSplitter.deploy(_accounts, _shares, _looksRareToken);
 
-  console.log("TokenDistributor deployed to:", tokenDistributor.address);
+  await tokenSplitter.deployed();
+
+  console.log("TokenSplitter deployed to:", tokenSplitter.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
